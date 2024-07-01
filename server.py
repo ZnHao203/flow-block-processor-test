@@ -12,6 +12,8 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/vote":
             self.handle_vote()
+        elif self.path == "/block":
+            self.handle_block()
         else:
             self.send_respose(404)
             self.end_headers
@@ -35,6 +37,31 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self.send_response(400)
                 self.end_headers()
                 self.wfile.write(b"Missing block_id field")
+        except json.JSONDecodeError:
+            self.send_response(400)
+            self.end_headers()
+            self.wfile.write(b"Invalid JSON")
+
+    def handle_block(self):
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        
+        print("Received body:", post_data.decode('utf-8'))  # Debugging
+
+        try:
+            data = json.loads(post_data)
+            block_id = data.get('id')
+            view = data.get('view')
+            if block_id and view:
+                print(f"The id of the block is {block_id}")
+                print(f"The view of the block is {view}")
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b"Received")
+            else:
+                self.send_response(400)
+                self.end_headers()
+                self.wfile.write(b"Missing block_id or view field")
         except json.JSONDecodeError:
             self.send_response(400)
             self.end_headers()
