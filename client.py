@@ -21,4 +21,5 @@ def send_block(url, block_data):
 if __name__ == "__main__":
     send_vote('http://localhost:8080/vote', {'block_id': '6fhdowieihoiwe5'})
     send_block('http://localhost:8080/block', {'id': '6fhdowieihoiwe5', "view": 1})
+    send_vote('http://localhost:8080/vote', {'block_id': '6fhdowieihoiwe5'})
     send_block('http://localhost:8080/block', {"view": 1})

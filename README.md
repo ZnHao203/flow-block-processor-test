@@ -1,6 +1,6 @@
 # flow-block-processor-test
 
-Basic sender & server
+Basic client & server
 To run:
-terminal A: $ go run main.go
-terminal B: $ python sender.py
+terminal A: $ python server.py
+terminal B: $ python client.py

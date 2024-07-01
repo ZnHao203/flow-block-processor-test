@@ -8,6 +8,8 @@ import threading
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+import blockchain
+
 class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == "/vote":
@@ -32,7 +34,9 @@ class RequestHandler(BaseHTTPRequestHandler):
                 print(f"The block id of the vote is {block_id}")
                 self.send_response(200)
                 self.end_headers()
-                self.wfile.write(b"Received")
+                self.wfile.write(b"Vote Received")
+
+                blockchain.process_vote(block_id)
             else:
                 self.send_response(400)
                 self.end_headers()
@@ -57,7 +61,9 @@ class RequestHandler(BaseHTTPRequestHandler):
                 print(f"The view of the block is {view}")
                 self.send_response(200)
                 self.end_headers()
-                self.wfile.write(b"Received")
+                self.wfile.write(b"Block Received")
+
+                blockchain.add_pending_block(block_id, view)
             else:
                 self.send_response(400)
                 self.end_headers()
