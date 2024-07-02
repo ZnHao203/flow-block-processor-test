@@ -20,18 +20,7 @@ def send_block(url, block_data):
     print(f"Response status code: {response.status_code}")
     print(f"Response body: {response.text}")
 
-if __name__ == "__main__":
-    try:
-        json_fpath = sys.argv[1]
-    except:
-        exit("Please specify input json file")
-    # print(json_fpath)
-    
-    try:
-        url = sys.argv[2]
-    except:
-        url = 'http://localhost:8080/'
-    
+def run_client(json_fpath, url='http://localhost:8080/'):
     with open(json_fpath, 'r') as inputfp:
         input_list = json.load(inputfp)
     # print(data)
@@ -49,3 +38,17 @@ if __name__ == "__main__":
             send_vote( url + "vote", payload)
         else:
             pass
+
+if __name__ == "__main__":
+    try:
+        json_fpath = sys.argv[1]
+    except:
+        exit("Please specify input json file")
+    # print(json_fpath)
+    
+    try:
+        url = sys.argv[2]
+    except:
+        url = 'http://localhost:8080/'
+    
+    run_client(json_fpath, url)

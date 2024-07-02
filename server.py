@@ -7,10 +7,19 @@ import time
 import threading
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from socketserver import ThreadingMixIn
 
 import blockchain
 
+class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
+    """Each request in a separate thread"""
+    pass
+
 class RequestHandler(BaseHTTPRequestHandler):
+    def log_message(self, format, *args):
+        # Suppress logging
+        return
+
     def do_POST(self):
         if self.path == "/vote":
             self.handle_vote()
@@ -73,7 +82,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b"Invalid JSON")
 
-def run(server_class=HTTPServer, handler_class=RequestHandler, port=8080):
+def run(server_class=ThreadingHTTPServer, handler_class=RequestHandler, port=8080):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print(f"Server running on port {port}...")
