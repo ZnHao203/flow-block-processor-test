@@ -6,10 +6,10 @@ import array
 
 
 
-class Block:
-    def __init__(self, id, view):
-        self.id = str(id)
-        self.view = int(view)
+# class Block:
+#     def __init__(self, id, view):
+#         self.id = str(id)
+#         self.view = int(view)
 
 class PendingBlock:
     def __init__(self, id, view):
@@ -23,11 +23,19 @@ class BlockChain:
         self.next_view = 1 # positive integer
 
     def accept_new_block(self, id, view):
-        self.block_chain.append(Block(id, view))
+        # only add a new block if its id is unique
+        if id in self.block_chain:
+            return False
+        self.block_chain.append(id)
         self.next_view += 1
+        return True
     
     def get_next_view(self):
         return self.next_view
+    
+    # def check_repeat_id(self, id):
+    #     print(id in self.block_chain)
+    #     return id in self.block_chain
     
 
 class PendingBlockArray:
@@ -58,15 +66,18 @@ class PendingBlockArray:
     def process_vote(self, block_id):
         # Find the index for the block_id
         # Mark that block as voted
+        # ignore invalid votes
+        # if there are blocks with identical ids in the array
+        #   just vote the one with min view
         index = 0
         length = len(self.pending_blocks)
         while index < length:
             if self.pending_blocks[index].id == block_id:
                 self.pending_blocks[index].voted = True
-                print("updated index")
+                # print("updated index")
                 return
             index += 1
-        print("vote id not exist")
+        # print("vote id not exist")
             
     
     # accept all blocks that satisfies the condition
@@ -76,7 +87,7 @@ class PendingBlockArray:
             block = self.pending_blocks[0]
             self.pending_blocks.pop(0)
             self.len_pending_blocks -= 1
-            print("this part is reached")
+            # print("this part is reached")
             return block
         return ""
 
@@ -85,8 +96,9 @@ block_array = BlockChain()
 
 # update blockchain, and output accepted block info      
 def accept_block(id, view):
-    block_array.accept_new_block(id, view)
-    print("NEW BLOCK ACCEPTED: id {}, view {}".format(id, view))
+    # only accept blocks with unique id
+    if block_array.accept_new_block(id, view):
+        print("NEW BLOCK ACCEPTED: id {}, view {}".format(id, view))
 
 # add a new pending block
 def add_pending_block(id, view):
@@ -95,17 +107,17 @@ def add_pending_block(id, view):
 
 # process a new vote and adds all possible pending blocks to the blockchain
 def process_vote(id):
-    print("process_vote", id)
+    # print("process_vote", id)
     pending_block_array.process_vote(id)
     while (True):
         next_view = block_array.get_next_view()
-        print("next view expected is ", next_view)
+        # print("next view expected is ", next_view)
         block = pending_block_array.check_blockchain_addition(next_view)
-        print(block)
+        # print(block)
         if block != "":
             accept_block(block.id, block.view)
-            print("found one")
+            # print("found one")
         else:
-            print("done")
+            # print("done")
             break
 
