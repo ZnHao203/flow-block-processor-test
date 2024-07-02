@@ -8,7 +8,12 @@ import threading
 from bc_classes import PendingBlockArray, BlockChain, PendingBlock
 
 # lock = threading.Lock() # use a lock for any function calls that modifies an array
-
+"""
+There are two major arrays - block_array and pending_block_array.
+Block_array contains the id of all accepted blocks, sorted in consequtive view orders. 
+Pending_block_array has the received blocks that are not accepted. 
+They could be (1)not voted or (2) voted but waiting for all blocks with a smaller view to be accepted.
+"""
 pending_block_array = PendingBlockArray()
 block_array = BlockChain()
 
@@ -45,7 +50,7 @@ def process_vote(id):
 
     while (True):
         next_view = block_array.get_next_view()
-        print("next view expected is ", next_view)
+        # print("next view expected is ", next_view)
 
         block = pending_block_array.check_blockchain_addition(next_view)
 

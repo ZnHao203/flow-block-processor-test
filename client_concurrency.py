@@ -4,7 +4,7 @@ import sys
 import time
 from client import run_client
 
-# note I'm testing the program with multithreading
+# note: I'm testing the program with multithreading
 # currently it works better with 1-2 client thread
 
 def run_single_client_1():

@@ -42,7 +42,7 @@ class PendingBlockArray:
             raise TypeError("Only block instances can be appended")
 
     def _find_insertion_index(self, block):
-        """Uses binary search to find the insertion index for the new block."""
+        #Uses binary search to find the insertion index for the new block.
         low, high = 0, self.len_pending_blocks
         while low < high:
             mid = (low + high) // 2

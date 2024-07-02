@@ -21,6 +21,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         return
 
     def do_POST(self):
+        # lead different requests to their target function
         if self.path == "/vote":
             self.handle_vote()
         elif self.path == "/block":
@@ -31,6 +32,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(b"Not Found")
     
     def handle_vote(self):
+        # handle vote requests
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         
@@ -56,6 +58,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(b"Invalid JSON")
 
     def handle_block(self):
+        # handle block requests
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         
