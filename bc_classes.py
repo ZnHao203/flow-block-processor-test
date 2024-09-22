@@ -71,6 +71,10 @@ class PendingBlockArray:
     
     # accept all blocks that satisfies the condition
     def check_blockchain_addition(self, next_view):
+        # remove outdated pending blocks
+        while (self.pending_blocks[0].view < next_view):
+            self.pending_blocks.pop[0]
+        # check if we can add more pending blocks
         if (self.len_pending_blocks > 0 and \
                 self.pending_blocks[0].view == next_view):
             block = self.pending_blocks[0]

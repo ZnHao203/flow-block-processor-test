@@ -1,5 +1,5 @@
 # flow-block-processor-test
-<p>Thank you for taking the time to take a look at this repo. I also would like to express my gratitude for providing such a nice opportunity - I really enjoyed the challenge. </p>
+<p> This is a demonstration of a basic blockchain-like setup. </p>
 
 <h2> Setup Basic client & server</h2>
 <p>Python version: 3.12</p>
